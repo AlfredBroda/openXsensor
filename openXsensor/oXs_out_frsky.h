@@ -14,8 +14,8 @@
 // this file is used only for FRSKY
 #if defined(PROTOCOL) && ( (PROTOCOL == FRSKY_SPORT) || ( PROTOCOL == FRSKY_HUB ) || (PROTOCOL == FRSKY_SPORT_HUB ) ) //if Frsky protocol is used
 
-//#define DEBUG_SETUP_PIN 5  // allows to send a pulse on an output pin during the enlapsed time that Arduino runs the set up 
-//#define DEBUG_SPORT_PIN 6  // allows to send a pulse on an output pin during the enlapsed time that Arduino checks for SPORT 
+//#define DEBUG_SETUP_PIN 5  // allows to send a pulse on an output pin during the enlapsed time that Arduino runs the set up
+//#define DEBUG_SPORT_PIN 6  // allows to send a pulse on an output pin during the enlapsed time that Arduino checks for SPORT
 
 #define INTERVAL_FRAME1 200
 #define INTERVAL_FRAME2 1000  // used by GPS
@@ -31,7 +31,7 @@
 // 0x00,0xA1,0x22,0x83,0xE4,0x45,0xC6,0x67,0x48,0xE9,0x6A,0xCB,0xAC,0x0D,0x8E,0x2F,0xD0,0x71,0xF2,0x53,0x34,0x95,0x16,0xB7,0x98,0x39,0xBA,0x1B
 
 
-// FrSky new DATA IDs (2 bytes) (copied from openTX telemetry/frsky_sport.cpp on 11 jul 2014) // those values are not used directly but bits 4 up to 11 are stored in an array in oXs_out_frsky.cpp 
+// FrSky new DATA IDs (2 bytes) (copied from openTX telemetry/frsky_sport.cpp on 11 jul 2014) // those values are not used directly but bits 4 up to 11 are stored in an array in oXs_out_frsky.cpp
 #define ALT_FIRST_ID            0x0100
 #define ALT_LAST_ID             0x010f
 #define VARIO_FIRST_ID          0x0110
@@ -54,7 +54,7 @@
 #define FUEL_LAST_ID            0x060f
 #define ACCX_FIRST_ID           0x0700
 #define ACCX_LAST_ID            0x070f
-#define ACCY_FIRST_ID           0x0710      
+#define ACCY_FIRST_ID           0x0710
 #define ACCY_LAST_ID            0x071f
 #define ACCZ_FIRST_ID           0x0720
 #define ACCZ_LAST_ID            0x072f
@@ -79,9 +79,9 @@
 #define ADC2_ID                 0xf103
 #define BATT_ID                 0xf104
 #define SWR_ID                  0xf105  // please do not use this code because it is already used by the receiver
-// End of list of all telemetry fields supported by SPORT  (defined by Frsky) 
+// End of list of all telemetry fields supported by SPORT  (defined by Frsky)
 
-//list of all telemetry fields supported by Hub protocol (defined by Frsky) 
+//list of all telemetry fields supported by Hub protocol (defined by Frsky)
 #define FRSKY_USERDATA_GPS_ALT_B    0x01
 #define FRSKY_USERDATA_TEMP1        0x02
 #define FRSKY_USERDATA_RPM          0x03
@@ -122,13 +122,13 @@
 #define FRSKY_USERDATA_VOLTAGE_A    0x3B // do not use this code to transmit a voltage. It requires a special formatting that is not implemented. Use VFAS_NEW instead
 #define FRSKY_USERDATA_GPS_DIST     0x3C
 #define FRSKY_USERDATA_FUELPERCENT  0x3D
-// Endof list of all telemetry fields supported by Hub protocol (defined by Frsky) 
+// Endof list of all telemetry fields supported by Hub protocol (defined by Frsky)
 
 
-/*  
+/*
 // mapping of fields to send
 #define DEFAULTFIELD  0x00  // value to let OXS select automatically the best telemetry field.
-#define   Alt      1       
+#define   Alt      1
 #define   VSpd     2
 #define   Curr     3
 #define   Vfas     4
@@ -145,57 +145,57 @@
 */
 
 //  This is the list of codes for each available measurements
-#define ALTIMETER       1        
-#define VERTICAL_SPEED  2        
-#define SENSITIVITY     3       
-#define ALT_OVER_10_SEC 4        
-#define VOLT_1           5       
-#define VOLT_2           6       
-#define VOLT_3           7       
-#define VOLT_4           8       
-#define VOLT_5           9       
-#define VOLT_6           10      
-#define CURRENTMA       11       
-#define MILLIAH         12       
-#define CELLS_1_2       13       
-#define CELLS_3_4       14       
-#define CELLS_5_6       15       
-#define RPM             16       
-#define ALTIMETER_2        17    
-#define VERTICAL_SPEED_2   18    
-#define SENSITIVITY_2      19    
-#define ALT_OVER_10_SEC_2  20    
-#define AIR_SPEED          21    
-#define PRANDTL_COMPENSATION 22  
-#define PPM_VSPEED         23    
-#define PPM                24    
-#define PRANDTL_DTE        25    
-#define TEST_1              26   
-#define TEST_2              27   
-#define TEST_3              28   
-#define VERTICAL_SPEED_A   29    
-#define VERTICAL_SPEED_I   30    
+#define ALTIMETER       1
+#define VERTICAL_SPEED  2
+#define SENSITIVITY     3
+#define ALT_OVER_10_SEC 4
+#define VOLT_1           5
+#define VOLT_2           6
+#define VOLT_3           7
+#define VOLT_4           8
+#define VOLT_5           9
+#define VOLT_6           10
+#define CURRENTMA       11
+#define MILLIAH         12
+#define CELLS_1_2       13
+#define CELLS_3_4       14
+#define CELLS_5_6       15
+#define RPM             16
+#define ALTIMETER_2        17
+#define VERTICAL_SPEED_2   18
+#define SENSITIVITY_2      19
+#define ALT_OVER_10_SEC_2  20
+#define AIR_SPEED          21
+#define PRANDTL_COMPENSATION 22
+#define PPM_VSPEED         23
+#define PPM                24
+#define PRANDTL_DTE        25
+#define TEST_1              26
+#define TEST_2              27
+#define TEST_3              28
+#define VERTICAL_SPEED_A   29
+#define VERTICAL_SPEED_I   30
 #define GLIDER_RATIO       31
 #define SECONDS_SINCE_T0        32
 #define AVERAGE_VSPEED_SINCE_TO 33
-#define PITCH               34  
+#define PITCH               34
 #define ROLL                35
 #define YAW                 36
 #define ADS_1               37
 #define ADS_2               38
 #define ADS_3               39
 #define ADS_4               40
-
+#define CELLS_MIN           41
 // to do : add alt min, alt max ,  rpm max? , current max (not sure that it is neaded because it can be calculated on TX side
 // End of list of type of available measurements
 
-  
- 
+
+
 #define UNKNOWN false
 #define KNOWN true
 
 /***************************************************************************************/
-/* Transmission status                                                                 */ 
+/* Transmission status                                                                 */
 /***************************************************************************************/
 #define TO_LOAD     0
 #define LOADED      1
@@ -206,7 +206,7 @@
 
 class OXS_OUT {
   public:
-#ifdef DEBUG  
+#ifdef DEBUG
     OXS_OUT(uint8_t pinTx,HardwareSerial &print);
 #else
     OXS_OUT(uint8_t pinTx);
@@ -216,18 +216,18 @@ class OXS_OUT {
     AIRSPEEDDATA* airSpeedData ;
     CURRENTDATA* currentData ;
     VOLTAGEDATA* voltageData ;
- //   uint8_t currentValueType ; //e.g. = ALTIMETER, VERTICAL_SPEED, = field_Id to transmit  
+ //   uint8_t currentValueType ; //e.g. = ALTIMETER, VERTICAL_SPEED, = field_Id to transmit
     void setup();
     void sendData();
-    
+
   private:
-// used by both protocols  
+// used by both protocols
     uint8_t _pinTx;
-#ifdef DEBUG  
+#ifdef DEBUG
     HardwareSerial* printer;
 #endif
- 
-#if defined( PROTOCOL ) &&  ( ( PROTOCOL == FRSKY_SPORT ) || ( PROTOCOL == FRSKY_SPORT_HUB ) )    
+
+#if defined( PROTOCOL ) &&  ( ( PROTOCOL == FRSKY_SPORT ) || ( PROTOCOL == FRSKY_SPORT_HUB ) )
 // used by SPORT protocol
     void sendSportData() ;
     uint8_t readStatusValue( uint8_t currentValueType) ;
@@ -236,7 +236,7 @@ class OXS_OUT {
     void FrSkySportSensorGpsSend() ;
 #endif
 
-#if defined( PROTOCOL ) &&  ( ( PROTOCOL == FRSKY_HUB ) || ( PROTOCOL == FRSKY_SPORT_HUB ) )  
+#if defined( PROTOCOL ) &&  ( ( PROTOCOL == FRSKY_HUB ) || ( PROTOCOL == FRSKY_SPORT_HUB ) )
 // used by Hub protocol
     void sendHubData() ;
     void loadHubValueToSend(  uint8_t ValueTypeToLoad) ;
@@ -257,25 +257,25 @@ class OXS_OUT {
 #endif
 };
 
-//extern int ppm ; 
+//extern int ppm ;
 //extern bool ppmAvailable ;
-extern struct ONE_MEASUREMENT ppm ; 
+extern struct ONE_MEASUREMENT ppm ;
 extern struct ONE_MEASUREMENT mainVspeed ;           // used to transmit the main Vspeed(calculated based on all set up in config)
 extern struct ONE_MEASUREMENT compensatedClimbRate ; // used to transmit the compensated Vspeed
 extern struct ONE_MEASUREMENT switchVSpeed ;         // used to transmit the selected Vspeed
 extern struct ONE_MEASUREMENT averageVSpeed ;        // used to transmit the average Vspeed
 extern struct ONE_MEASUREMENT vSpeedImu ;            // used to transmit the Vspeedcalculated based on IMU
 
-#if defined(VFAS_SOURCE) 
-extern struct ONE_MEASUREMENT vfas ; 
+#if defined(VFAS_SOURCE)
+extern struct ONE_MEASUREMENT vfas ;
 #endif
 
 extern struct ONE_MEASUREMENT test1 ;
 extern struct ONE_MEASUREMENT test2 ;
 extern struct ONE_MEASUREMENT test3 ;
 extern struct ONE_MEASUREMENT gliderRatio ;
-extern struct ONE_MEASUREMENT secFromT0 ; 
-extern struct ONE_MEASUREMENT averageVspeedSinceT0 ;     
+extern struct ONE_MEASUREMENT secFromT0 ;
+extern struct ONE_MEASUREMENT averageVspeedSinceT0 ;
 
 extern uint8_t selectedVario ;
 
@@ -298,7 +298,7 @@ extern OXS_ADS1115 oXs_ads1115 ;
 // GPS data being read
 // **********************
 extern int32_t GPS_lon;               // longitude in degree with 7 decimals, (neg for S)
-extern bool    GPS_lonAvailable; 
+extern bool    GPS_lonAvailable;
 extern int32_t GPS_lat;               // latitude   in degree with 7 decimals, (neg for ?)
 extern bool    GPS_latAvailable;
 
@@ -338,7 +338,7 @@ void setSportNewData( uint16_t id, uint32_t value ) ;
 void initSportUart() ;
 void initMeasurement() ;
 
-// used by Hub protocol 
+// used by Hub protocol
 #define MAXSIZEBUFFER 70  // max size of the buffer used to store the data to be sent in the hub protocol
 void initHubUart(  ) ;
 void setHubNewData(  ) ;
@@ -368,17 +368,17 @@ uint32_t millis( void ) ;
 //#define TICKS2COUNT         278  // Ticks between two bits.
 //#define TICKS2WAITONE       278  // Wait one bit period.
 //#define TICKS2WAITONE_HALF  416  // Wait one and a half bit period.
-  #if F_CPU == 20000000L   // 20MHz clock 
-    // Sinan: Not tested                                                     
+  #if F_CPU == 20000000L   // 20MHz clock
+    // Sinan: Not tested
     #define TICKS2COUNTSPORT         348  // Ticks between two bits.
     #define TICKS2WAITONESPORT       348  // Wait one bit period.
     #define TICKS2WAITONE_HALFSPORT  520    // Wait one and a half bit period.
-  #elif F_CPU == 16000000L  // 16MHz clock                                                  
+  #elif F_CPU == 16000000L  // 16MHz clock
     #define TICKS2COUNTSPORT         278  // Ticks between two bits.
     #define TICKS2WAITONESPORT       278  // Wait one bit period.
     #define TICKS2WAITONE_HALFSPORT  416    // Wait one and a half bit period.
   #elif F_CPU == 8000000L   // 8MHz clock
-    // Assumes a 8MHz clock                                                   
+    // Assumes a 8MHz clock
     #define TICKS2COUNTSPORT         139  // Ticks between two bits.
     #define TICKS2WAITONESPORT       139  // Wait one bit period.
     #define TICKS2WAITONE_HALFSPORT  208    // Wait one and a half bit period.
@@ -391,16 +391,16 @@ uint32_t millis( void ) ;
 //#define TICKS2COUNT         (278*6)  // Ticks between two bits.
 //#define TICKS2WAITONE       (278*6)  // Wait one bit period.
 //#define TICKS2WAITONE_HALF  (416*6)  // Wait one and a half bit period.
-  #if F_CPU == 20000000L     // 20MHz clock                                                  
+  #if F_CPU == 20000000L     // 20MHz clock
     // Sinan: Not tested
     #define TICKS2COUNTHUB         (348*6)  // Ticks between two bits.
     #define TICKS2WAITONEHUB       (348*6)  // Wait one bit period.
     #define TICKS2WAITONE_HALFHUB  (520*6)    // Wait one and a half bit period.
-  #elif F_CPU == 16000000L   // 16MHz clock                                                  
+  #elif F_CPU == 16000000L   // 16MHz clock
     #define TICKS2COUNTHUB         (278*6)  // Ticks between two bits.
     #define TICKS2WAITONEHUB       (278*6)  // Wait one bit period.
     #define TICKS2WAITONE_HALFHUB  (416*6)    // Wait one and a half bit period.
-  #elif F_CPU == 8000000L    // 8MHz clock                                                   
+  #elif F_CPU == 8000000L    // 8MHz clock
     #define TICKS2COUNTHUB         (139*6)  // Ticks between two bits.
     #define TICKS2WAITONEHUB       (139*6)  // Wait one bit period.
     #define TICKS2WAITONE_HALFHUB  (208*6)    // Wait one and a half bit period.
@@ -412,13 +412,13 @@ uint32_t millis( void ) ;
 //#define INTERRUPT_EARLY_BIAS  32       // Cycles to allow of other interrupts.
 // INTERRUPT_EARLY_BIAS is to bias the sample point a bit early in case
 // the Timer 0 interrupt (5.5uS) delays the start bit detection
-  #if F_CPU == 20000000L     // 20MHz clock                                                  
+  #if F_CPU == 20000000L     // 20MHz clock
     #define INTERRUPT_EXEC_CYCL   112       // Cycles to execute interrupt routines from interrupt.
     #define INTERRUPT_EARLY_BIAS  40       // Cycles to allow of other interrupts.
-  #elif F_CPU == 16000000L   // 16MHz clock                                                  
+  #elif F_CPU == 16000000L   // 16MHz clock
     #define INTERRUPT_EXEC_CYCL   90       // Cycles to execute interrupt routines from interrupt.
     #define INTERRUPT_EARLY_BIAS  32       // Cycles to allow of other interrupts.
-  #elif F_CPU == 8000000L    // 8MHz clock                                                   
+  #elif F_CPU == 8000000L    // 8MHz clock
     #define INTERRUPT_EXEC_CYCL   90       // Cycles to execute interrupt routines from interrupt.
     #define INTERRUPT_EARLY_BIAS  32       // Cycles to allow of other interrupts.
   #else
@@ -427,29 +427,29 @@ uint32_t millis( void ) ;
 
     #define INTERRUPT_ENTRY_TRANSMIT  59   // Cycles in ISR before sending first bit from first byte; Without this correction, first bit is sent 7.4 usec to late at 8 Mhz (so it takes 59 cycles = 7.4 usec * 8)
     #define INTERRUPT_BETWEEN_TRANSMIT  64   // Cycles in ISR before sending first bit from 2d, 3rd... bytes; Without this correction, first bit is sent 4 usec to late at 16 Mhz (so it takes 64 cycles = 4 usec * 16)
-    
+
 // this section define some delays used in Aserial; values can be used by any protocol
-  #if F_CPU == 20000000L     // 20MHz clock                                                  
+  #if F_CPU == 20000000L     // 20MHz clock
     #define DELAY_4000  ((uint16_t)4000.0 * 20.0 /16.0 )
-    #define DELAY_3500  ((uint16_t)3500.0 * 20.0 /16.0 )    
+    #define DELAY_3500  ((uint16_t)3500.0 * 20.0 /16.0 )
     #define DELAY_2000  ((uint16_t)2000.0 * 20.0 /16.0 )
-    #define DELAY_1600  ((uint16_t)1600.0 * 20.0 /16.0 )    
+    #define DELAY_1600  ((uint16_t)1600.0 * 20.0 /16.0 )
     #define DELAY_400  ((uint16_t)400.0 * 20.0 /16.0 )
     #define DELAY_100  ((uint16_t)100.0 * 20.0 /16.0 )
-  #elif F_CPU == 16000000L   // 16MHz clock                                                  
-    #define DELAY_4000 ((uint16_t) (3999L * 16) )     
-    #define DELAY_3500 ((uint16_t) (3500L * 16) )         
-    #define DELAY_2000 ((uint16_t) (2000L * 16) )     
-    #define DELAY_1600 ((uint16_t) (1600L * 16) )     
-    #define DELAY_400 ((uint16_t) (400 * 16) )     
-    #define DELAY_100 ((uint16_t) (100 * 16) )     
-  #elif F_CPU == 8000000L    // 8MHz clock                                                   
+  #elif F_CPU == 16000000L   // 16MHz clock
+    #define DELAY_4000 ((uint16_t) (3999L * 16) )
+    #define DELAY_3500 ((uint16_t) (3500L * 16) )
+    #define DELAY_2000 ((uint16_t) (2000L * 16) )
+    #define DELAY_1600 ((uint16_t) (1600L * 16) )
+    #define DELAY_400 ((uint16_t) (400 * 16) )
+    #define DELAY_100 ((uint16_t) (100 * 16) )
+  #elif F_CPU == 8000000L    // 8MHz clock
     #define  DELAY_4000 ((uint16_t)4000L * 8 )
-    #define  DELAY_3500 ((uint16_t)3500L * 8 )    
+    #define  DELAY_3500 ((uint16_t)3500L * 8 )
     #define  DELAY_2000 ((uint16_t)2000 * 8 )
-    #define  DELAY_1600 ((uint16_t)1600 * 8 )    
+    #define  DELAY_1600 ((uint16_t)1600 * 8 )
     #define  DELAY_400 ((uint16_t)400 * 8 )
-    #define  DELAY_100 ((uint16_t)100 * 8 )    
+    #define  DELAY_100 ((uint16_t)100 * 8 )
   #else
     #error Unsupported clock speed
   #endif
@@ -473,9 +473,3 @@ uint32_t millis( void ) ;
 #endif // Enf of ndef MULTIPLEX
 
 #endif // OXS_OUT_h
-
-
-
-
-
-

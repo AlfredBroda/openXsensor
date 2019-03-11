@@ -1,6 +1,6 @@
 // File for Multiplex
 #include "oXs_out_multiplex.h"
-#if defined(PROTOCOL) &&  (PROTOCOL == MULTIPLEX) 
+#if defined(PROTOCOL) &&  (PROTOCOL == MULTIPLEX)
 
 #ifdef DEBUG
 // ************************* Several parameters to help debugging
@@ -15,19 +15,19 @@ extern unsigned long millis( void ) ;
 extern void delay(unsigned long ms) ;
 
 struct t_mbAllData multiplexData ;
-volatile uint8_t sendStatus ;   
+volatile uint8_t sendStatus ;
 int fieldContainsData[][7]  = {  SETUP_MULTIPLEX_DATA_TO_SEND } ; // contains the set up of field to be transmitted, the first field contains the Multiplex adress to be used for this measurement
 int numberOfFields = sizeof(fieldContainsData) / sizeof(fieldContainsData[0]) ;
 uint8_t multiplexUnit[] = { MULTIPLEX_UNITS } ; // contains the unit code (4 bits) for each OXS measurement
 
-#ifdef DEBUG  
+#ifdef DEBUG
 OXS_OUT::OXS_OUT(uint8_t pinTx,HardwareSerial &print)
 #else
 OXS_OUT::OXS_OUT(uint8_t pinTx)
 #endif
 {
-  _pinTx = pinTx ;    
-#ifdef DEBUG 
+  _pinTx = pinTx ;
+#ifdef DEBUG
   printer = &print; //operate on the address of print
 #endif
 } // end constructor
@@ -53,33 +53,33 @@ void OXS_OUT::setup() {
 
     //initMultiplexUart( &sportData ) ;
     initMultiplexUart( &multiplexData ) ;
-	
+
 #ifdef DEBUG
       printer->print(F("Multiplex Output Module: TX Pin="));
       printer->println(_pinTx);
-      printer->print(F(" milli="));  
+      printer->print(F(" milli="));
       printer->println(millis());
       printer->println(F("Multiplex Output Module: Setup!"));
       printer->print(F("Number of fields to send = "));
       printer->println(numberOfFields);
       for (int rowNr = 0 ; rowNr < numberOfFields ; rowNr++) {
-          printer->print(fieldContainsData[rowNr][0],HEX); printer->print(F(" , ")); 
+          printer->print(fieldContainsData[rowNr][0],HEX); printer->print(F(" , "));
           printer->print(fieldContainsData[rowNr][1]);  printer->print(F(" , "));
           printer->print(fieldContainsData[rowNr][2]);  printer->print(F(" , "));
           printer->print(fieldContainsData[rowNr][3]);  printer->print(F(" , "));
           printer->println(fieldContainsData[rowNr][4]);
-      }    
+      }
 #endif
      for ( int mbIndex = 0 ; mbIndex <= MB_MAX_ADRESS ;   mbIndex++ ) {
        multiplexData.mbData[mbIndex].response[0] = mbIndex ;
        multiplexData.mbData[mbIndex].active = NOT_ACTIVE ;
-     }  
+     }
      for ( int mbIndex = 0 ; mbIndex < numberOfFields ;   mbIndex++ ) {
        multiplexData.mbData[fieldContainsData[mbIndex][0]].response[0] = ( fieldContainsData[mbIndex][0] << 4) | ( multiplexUnit[ fieldContainsData[mbIndex][1] ] );
-       multiplexData.mbData[fieldContainsData[mbIndex][0]].response[1] = (uint8_t) MB_NOVALUE ; // low byte 
+       multiplexData.mbData[fieldContainsData[mbIndex][0]].response[1] = (uint8_t) MB_NOVALUE ; // low byte
        multiplexData.mbData[fieldContainsData[mbIndex][0]].response[2] = MB_NOVALUE >> 8 ; // hight byte
        multiplexData.mbData[fieldContainsData[mbIndex][0]].active = AVAILABLE ;
-     }  
+     }
 
 // for debug purpose only
 multiplexData.mbData[15].response[0] = 0xF0 ;
@@ -97,7 +97,7 @@ multiplexData.mbData[15].response[2] = 0xAA ;
         Serial.print( multiplexData.mbData[mbIndex].response[1], HEX);
         Serial.print(" r2=");
         Serial.println( multiplexData.mbData[mbIndex].response[2], HEX);
-     }   
+     }
 #endif
 
 
@@ -123,13 +123,13 @@ uint8_t OXS_OUT::formatOneValue( uint8_t currentFieldToSend) {
 //  int fieldID ;
 //  fieldID = 0 ;
   valueTemp = 0 ;
-  
-#ifdef GPS_INSTALLED            
+
+#ifdef GPS_INSTALLED
   uint8_t GPS_no_fix = ( (GPS_fix_type != 3 ) && (GPS_fix_type != 4 ) ) ; // this flag is true when there is no fix
-#endif          
-      
+#endif
+
   switch ( fieldContainsData[currentFieldToSend][1] ) {
-#ifdef VARIO       
+#ifdef VARIO
       case  ALTIMETER :
         if ( ! varioData->absoluteAlt.available ) return 0 ;
         valueTemp = (varioData->absoluteAlt.value ) / 100 ;
@@ -142,13 +142,13 @@ uint8_t OXS_OUT::formatOneValue( uint8_t currentFieldToSend) {
         Serial.println("Alt available ");
 #endif
         break ;
-      case VERTICAL_SPEED : 
-         if ( ! mainVspeed.available ) return 0; 
+      case VERTICAL_SPEED :
+         if ( ! mainVspeed.available ) return 0;
          valueTemp = mainVspeed.value / 10 ;
          mainVspeed.available = false ;
 #ifdef DEBUG_FORCE_VSPEED_TO
          valueTemp = DEBUG_FORCE_VSPEED_TO ;
-#endif         
+#endif
          break ;
       case SENSITIVITY :
              if ( !varioData->sensitivity.available ) return 0;
@@ -170,17 +170,17 @@ uint8_t OXS_OUT::formatOneValue( uint8_t currentFieldToSend) {
         valueTemp = (varioData->relativeAltMax ) / 100 ;
         varioData->relativeAltMaxAvailable = false ;
             break ;
-      
-#endif  // End vario    
+
+#endif  // End vario
 
 /*
-#ifdef VARIO2       
+#ifdef VARIO2
       case  ALTIMETER_2 :
         if ( ! varioData_2->absoluteAltAvailable  ) return 0;
         valueTemp = varioData_2->absoluteAlt  / 100 ;
         varioData_2->absoluteAltAvailable = false ;
         break ;
-      case VERTICAL_SPEED_2 : 
+      case VERTICAL_SPEED_2 :
          if ( ! varioData_2->climbRateAvailable  ) return 0;
          valueTemp = varioData_2->climbRate / 10 ;
          varioData_2->climbRateAvailable = false ;
@@ -194,35 +194,35 @@ uint8_t OXS_OUT::formatOneValue( uint8_t currentFieldToSend) {
              if ( ! varioData_2->vSpeed10SecAvailable  ) return 0;
              valueTemp = varioData_2->vSpeed10Sec / 100 ; // todo : adjust decimals
              varioData_2->vSpeed10SecAvailable = false ;
-             break ; 
+             break ;
       case  REL_ALTIMETER_2 :
         if ( ! varioData_2->relativeAltAvailable ) return 0 ;
         valueTemp = (varioData_2->relativeAlt ) / 100 ;
-        varioData_2->relativeAltAvailable = false ;           
-        break ;     
-#endif  // End vario2    
+        varioData_2->relativeAltAvailable = false ;
+        break ;
+#endif  // End vario2
 */
 /*
 #if defined (VARIO )  &&  defined (VARIO2)
-      case VERTICAL_SPEED_A : 
+      case VERTICAL_SPEED_A :
         if ( ! averageVSpeedAvailable  ) return 0;
         valueTemp = averageVSpeed / 10 ;
-        averageVSpeedAvailable = false ; 
-         break ; 
+        averageVSpeedAvailable = false ;
+         break ;
 #endif
 
 #if defined (VARIO )  && ( defined (VARIO2) || defined( AIRSPEED) || defined( USE_6050) ) && defined (VARIO_PRIMARY ) && defined (VARIO_SECONDARY )  && defined (PIN_PPM)
-      case PPM_VSPEED : 
+      case PPM_VSPEED :
         if ( ! switchVSpeedAvailable  ) return 0;
         valueTemp = switchVSpeed / 10 ;
-        switchVSpeedAvailable = false ; 
-         break ; 
+        switchVSpeedAvailable = false ;
+         break ;
 #endif
 */
-#ifdef AIRSPEED       
+#ifdef AIRSPEED
       case  AIR_SPEED :
         if ( ! airSpeedData->airSpeed.available  ) return 0;
-        valueTemp = airSpeedData->airSpeed.value  * 1.852;   //  convert from 1/10 of knots to  1/10 of Km/h 
+        valueTemp = airSpeedData->airSpeed.value  * 1.852;   //  convert from 1/10 of knots to  1/10 of Km/h
         airSpeedData->airSpeed.available = false ;
         break ;
 //      case  PRANDTL_COMPENSATION :
@@ -230,43 +230,43 @@ uint8_t OXS_OUT::formatOneValue( uint8_t currentFieldToSend) {
 //        valueTemp = airSpeedData->compensation / 10  ;
 //        airSpeedData->compensationAvailable = false ;
 //        break ;
-#endif  // End airpseed    
+#endif  // End airpseed
 
 //#if defined (VARIO) && defined ( AIRSPEED)
 //      case PRANDTL_DTE :
 //        if ( ! compensatedClimbRateAvailable  ) return 0;
-//        valueTemp =  compensatedClimbRate / 10 ; 
+//        valueTemp =  compensatedClimbRate / 10 ;
 //        compensatedClimbRateAvailable = false ;
 //        break ;
 //#endif  // End defined (VARIO) && defined ( AIRSPEED)
 
 #if defined(ARDUINO_MEASURES_VOLTAGES) && (ARDUINO_MEASURES_VOLTAGES == YES)
-      case VOLT_1 :  
+      case VOLT_1 :
          if (! voltageData->mVolt[0].available  ) return 0;
          valueTemp = voltageData->mVolt[0].value / 100;
          voltageData->mVolt[0].available = false ;
          break ;
-      case VOLT_2 :  
+      case VOLT_2 :
          if ( ! voltageData->mVolt[1].available  ) return 0;
          valueTemp = voltageData->mVolt[1].value / 100 ;
          voltageData->mVolt[1].available = false ;
           break ;
-      case VOLT_3 :  
+      case VOLT_3 :
          if ( ! voltageData->mVolt[2].available  ) return 0;
          valueTemp = voltageData->mVolt[2].value / 100 ;
          voltageData->mVolt[2].available = false ;
           break ;
-      case VOLT_4 :  
+      case VOLT_4 :
          if ( ! voltageData->mVolt[3].available  ) return 0;
          valueTemp = voltageData->mVolt[3].value / 100 ;
          voltageData->mVolt[3].available = false ;
           break ;
-      case VOLT_5 :  
+      case VOLT_5 :
          if ( ! voltageData->mVolt[4].available  ) return 0;
          valueTemp = voltageData->mVolt[4].value / 100 ;
          voltageData->mVolt[4].available = false ;
           break ;
-      case VOLT_6 :  
+      case VOLT_6 :
          if ( ! voltageData->mVolt[5].available  ) return 0;
          valueTemp = voltageData->mVolt[5].value / 100 ;
          voltageData->mVolt[5].available = false ;
@@ -288,85 +288,85 @@ uint8_t OXS_OUT::formatOneValue( uint8_t currentFieldToSend) {
 
 #if defined(ARDUINO_MEASURES_VOLTAGES) && (ARDUINO_MEASURES_VOLTAGES == YES) && (NUMBEROFCELLS > 0)     //  This part has still to be adapted for Multiplex !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       case  CELL_1 :
-          if ( ! voltageData->mVoltCell_Available[0]  ) return 0;
-          valueTemp =  voltageData->mVoltCell[0] /100 ; 
-          voltageData->mVoltCell_Available[0]  = false ;
+          if ( ! voltageData->mVoltCell[0].available ) return 0;
+          valueTemp =  voltageData->mVoltCell[0].value / 100 ;
+          voltageData->mVoltCell[0].available = false ;
           break ;
       case  CELL_2 :
-          if ( ! voltageData->mVoltCell_Available[1]  ) return 0;
-          valueTemp =  voltageData->mVoltCell[1]  / 100 ; 
-          voltageData->mVoltCell_Available[1]  = false ;
+          if ( ! voltageData->mVoltCell[1].available ) return 0;
+          valueTemp =  voltageData->mVoltCell[1].value / 100 ;
+          voltageData->mVoltCell[1].available = false ;
           break ;
       case  CELL_3 :
-          if ( ! voltageData->mVoltCell_Available[2]  ) return 0;
-          valueTemp =  voltageData->mVoltCell[2]  / 100 ; 
-          voltageData->mVoltCell_Available[2]  = false ;
+          if ( ! voltageData->mVoltCell[2].available ) return 0;
+          valueTemp =  voltageData->mVoltCell[2].value / 100 ;
+          voltageData->mVoltCell[2].available = false ;
           break ;
       case  CELL_4 :
-          if ( ! voltageData->mVoltCell_Available[3]  ) return 0;
-          valueTemp =  voltageData->mVoltCell[3] / 100 ; 
-          voltageData->mVoltCell_Available[3]  = false ;
+          if ( ! voltageData->mVoltCell[3].available ) return 0;
+          valueTemp =  voltageData->mVoltCell[3].value / 100 ;
+          voltageData->mVoltCell[3].available = false ;
           break ;
       case  CELL_5 :
-          if ( ! voltageData->mVoltCell_Available[4]  ) return 0;
-          valueTemp =  voltageData->mVoltCell[4] / 100 ; 
-          voltageData->mVoltCell_Available[4]  = false ;
+          if ( ! voltageData->mVoltCell[4].available ) return 0;
+          valueTemp =  voltageData->mVoltCell[4].value / 100 ;
+          voltageData->mVoltCell[4].available = false ;
           break ;
       case  CELL_6 :
-          if ( ! voltageData->mVoltCell_Available[5]  ) return 0;
-          valueTemp =  voltageData->mVoltCell[5] / 100 ; 
-          voltageData->mVoltCell_Available[5]  = false ;
+          if ( ! voltageData->mVoltCell[5].available ) return 0;
+          valueTemp =  voltageData->mVoltCell[5].value / 100 ;
+          voltageData->mVoltCell[5].available = false ;
           break ;
       case  CELL_MIN :
-          if ( ! voltageData->mVoltCellMin_Available  ) return 0;
-          valueTemp =  voltageData->mVoltCellMin / 100 ; 
-          voltageData->mVoltCellMin_Available  = false ;
+          if ( ! voltageData->mVoltCellMin.available  ) return 0;
+          valueTemp =  voltageData->mVoltCellMin.value / 100 ;
+          voltageData->mVoltCellMin.available  = false ;
           break ;
       case  CELL_TOT :
-          if ( ! voltageData->mVoltCellTot_Available ) return 0;
-          valueTemp =  voltageData->mVoltCellTot  / 100 ; 
-          voltageData->mVoltCellTot_Available  = false ;
+          if ( ! voltageData->mVoltCellTot.available ) return 0;
+          valueTemp =  voltageData->mVoltCellTot.value  / 100 ;
+          voltageData->mVoltCellTot.available  = false ;
           break ;
 
-#endif  // NUMBEROFCELLS > 0 
+#endif  // NUMBEROFCELLS > 0
 
-#ifdef PIN_PPM 
+#ifdef PIN_PPM
       case  PPM :
           if ( ! ppm.available  ) return 0;
           valueTemp = ppm.value ;
-          ppm.available  = false ; 
+          ppm.available  = false ;
           break ;
 #endif
 
 
-#ifdef MEASURE_RPM 
+#ifdef MEASURE_RPM
       case  RPM :
           if ( ! sport_rpm.available  ) return 0;
 #if defined (PULSES_PER_ROTATION)
           valueTemp  =  sport_rpm.value * 60.0 / PULSES_PER_ROTATION ;
 #else  // if PULSES_PER_ROTATION is not defined, we assume 1
           valueTemp  =  sport_rpm.value * 60 ;
-#endif        
+#endif
           sport_rpm.available  = false ;
-          break ;   
+          break ;
 #endif
       case  TEST_1 :
           if ( ! test1.available  ) return 0;
           valueTemp = test1.value ;
-          test1.available  = false ; 
+          test1.available  = false ;
           break ;
       case  TEST_2 :
           if ( ! test2.available  ) return 0;
           valueTemp = test2.value ;
-          test2.available  = false ; 
+          test2.available  = false ;
           break ;
       case  TEST_3 :
           if ( ! test3.available  ) return 0;
           valueTemp = test3.value ;
-          test3.available  = false ; 
+          test3.available  = false ;
           break ;
 
-#ifdef GPS_INSTALLED            
+#ifdef GPS_INSTALLED
       case GPS_COURSE :
         if (GPS_no_fix ) return 0 ;
         valueTemp = GPS_ground_course / 10000 ; // convert from degre * 100000 to 1/10 of degree
@@ -379,9 +379,9 @@ uint8_t OXS_OUT::formatOneValue( uint8_t currentFieldToSend) {
         valueTemp = ((uint32_t) GPS_speed_2d) * 36 /100 ;       // convert from cm/sec to 1/10 of km/h
 #endif
         break ;
-      case GPS_ALTITUDE : 
+      case GPS_ALTITUDE :
         if (GPS_no_fix ) return 0 ;
-        valueTemp = GPS_altitude / 1000 ;                        // convert from mm to m 
+        valueTemp = GPS_altitude / 1000 ;                        // convert from mm to m
         break ;
       case GPS_DISTANCE :
         if (GPS_no_fix ) return 0 ;
@@ -393,11 +393,11 @@ uint8_t OXS_OUT::formatOneValue( uint8_t currentFieldToSend) {
         break ;
 #endif                           // end GPS_INSTALLED
       }  // end Switch
-//      if ( (fieldContainsData[currentFieldToSend][0] != 0)  ) { ;  // to be adapted in a condition that protect modification of data array while data are transfered to TX buffer array 
+//      if ( (fieldContainsData[currentFieldToSend][0] != 0)  ) { ;  // to be adapted in a condition that protect modification of data array while data are transfered to TX buffer array
 //      }
       valueTemp = (valueTemp * fieldContainsData[currentFieldToSend][2] / fieldContainsData[currentFieldToSend][3])  + fieldContainsData[currentFieldToSend][4]  ;
       alarm =  (( valueTemp <= fieldContainsData[currentFieldToSend][5] ) || ( valueTemp >= fieldContainsData[currentFieldToSend][6]) ) ? 1 : 0;
-      setMultiplexNewData(  fieldContainsData[currentFieldToSend][0]  ,  valueTemp , alarm  ) ; 
+      setMultiplexNewData(  fieldContainsData[currentFieldToSend][0]  ,  valueTemp , alarm  ) ;
       return fieldContainsData[currentFieldToSend][1] ;
 }  // End function
 
@@ -406,18 +406,18 @@ void OXS_OUT::setMultiplexNewData(  uint16_t id, int32_t value , uint8_t alarm)
 {
 #ifdef DEBUGSETNEWDATA
         int32_t valueOrig = value ;
-#endif        
+#endif
         multiplexData.mbData[id].active = LOCKED ;
         value = value << 1 ;
         value += alarm ;
-        multiplexData.mbData[id].response[1] = value ;	
-        multiplexData.mbData[id].response[2] = value >> 8 ; 
+        multiplexData.mbData[id].response[1] = value ;
+        multiplexData.mbData[id].response[2] = value >> 8 ;
         multiplexData.mbData[id].active = AVAILABLE ;
-#ifdef DEBUGSETNEWDATA                                        
+#ifdef DEBUGSETNEWDATA
         Serial.print("set new data at ");
         Serial.print( millis());
         Serial.print(" for id=");
-        Serial.print( id ); 
+        Serial.print( id );
         Serial.print(" ");
         Serial.print( multiplexData.mbData[id].response[0] , HEX );
         Serial.print(" ");
@@ -433,10 +433,10 @@ void OXS_OUT::setMultiplexNewData(  uint16_t id, int32_t value , uint8_t alarm)
 
         Serial.println(" ");
 #endif
-              
+
 }
 
-//---------------------------------- Here the code to handle the UART  
+//---------------------------------- Here the code to handle the UART
 #ifdef DEBUG
 //#define DEBUGSETNEWDATA
 //#define DEBUGASERIAL
@@ -454,10 +454,10 @@ static volatile uint8_t TxCount ;
 volatile uint8_t debugUartRx ;
 
 volatile uint8_t ppmInterrupted ; // This flag is activated at the end of handling interrupt on Timer 1 Compare A if during this interrupt handling an interrupt on pin change (INT0 or INT1) occurs
-                         // in this case, ppm will be wrong and has to be discarded       
+                         // in this case, ppm will be wrong and has to be discarded
 //uint8_t sensorId ;
 
-static volatile uint8_t TxMultiplexData[3] ; // array containing the char to transmit (is filled only when a polling address is received 
+static volatile uint8_t TxMultiplexData[3] ; // array containing the char to transmit (is filled only when a polling address is received
 //static uint8_t firstMultiplexData ;
 struct t_mbAllData  * volatile ThisMultiplexData = 0 ;
 
@@ -491,7 +491,7 @@ ISR(TIMER1_COMPA_vect)
         if (  ++TxCount < 3  ) {   //  there are 3 bytes to send in the Multiplex interface ?
               SwUartTXData = TxMultiplexData[TxCount] ;
 //                  SwUartTXData = TxCount ;
-              CLEAR_TX_PIN_MB();                     // Send a logic 0 on the TX_PIN as start bit  
+              CLEAR_TX_PIN_MB();                     // Send a logic 0 on the TX_PIN as start bit
               OCR1A = TCNT1 + TICKS2WAITONEMULTIPLEX  - INTERRUPT_BETWEEN_TRANSMIT;   // Count one period into the future.
               SwUartTXBitCount = 0 ;
               state = TRANSMIT ;
@@ -504,7 +504,7 @@ ISR(TIMER1_COMPA_vect)
         }
         break ;
 
-        case RECEIVE :  // Start bit has been received and we will read bits of data receiving, LSB first.     
+        case RECEIVE :  // Start bit has been received and we will read bits of data receiving, LSB first.
               OCR1A += TICKS2WAITONEMULTIPLEX ;                    // Count one period after the falling edge is trigged.
               uint8_t data ;                     // Use a temporary local storage (it saves some bytes (and perhaps time)
               data = SwUartRXBitCount ;
@@ -522,7 +522,7 @@ ISR(TIMER1_COMPA_vect)
                         state = WAITING ;
                         OCR1A += DELAY_4000 ;                // 4mS gap before listening (take care that 4096 is the max we can wait because timer 1 is 16 bits and prescaler = 1)
                    } else  {
-                        if  ( pdata->mbData[ SwUartRXData ] . active == AVAILABLE )  { 
+                        if  ( pdata->mbData[ SwUartRXData ] . active == AVAILABLE )  {
                           TxMultiplexData[0] = pdata->mbData[SwUartRXData].response[0] ;
                           TxMultiplexData[1] = pdata->mbData[SwUartRXData].response[1] ;
                           TxMultiplexData[2] = pdata->mbData[SwUartRXData].response[2] ;
@@ -536,7 +536,7 @@ ISR(TIMER1_COMPA_vect)
                    } // end receiving 1 byte
            } // End receiving  1 bit or 1 byte (8 bits)
         break ;
-  
+
       case TxPENDING :                                         //End of delay before sending data has occurs
             CLEAR_TX_PIN_MB() ;                          // Send a start bit (logic 0 on the TX_PIN).
             OCR1A = TCNT1 + TICKS2WAITONEMULTIPLEX - INTERRUPT_ENTRY_TRANSMIT;         // Count one period into the future.
@@ -567,22 +567,22 @@ ISR(TIMER1_COMPA_vect)
             FORCE_INDIRECT( pdataDebug ) ;
             lineWhenDebugging++ ;
             if ( lineWhenDebugging > MB_MAX_ADRESS ) lineWhenDebugging = 0 ;
-            if  ( pdataDebug->mbData[ lineWhenDebugging ] . active == AVAILABLE )  { 
+            if  ( pdataDebug->mbData[ lineWhenDebugging ] . active == AVAILABLE )  {
                           TxMultiplexData[0] = pdataDebug->mbData[lineWhenDebugging].response[0] ;
                           TxMultiplexData[1] = pdataDebug->mbData[lineWhenDebugging].response[1] ;
                           TxMultiplexData[2] = pdataDebug->mbData[lineWhenDebugging].response[2] ;
-                          pdataDebug->mbData [ lineWhenDebugging ] . active = NOT_AVAILABLE ;  
+                          pdataDebug->mbData [ lineWhenDebugging ] . active = NOT_AVAILABLE ;
                   //  TxMultiplexData[0] = 0x55 ; TxMultiplexData[1] = 0xAA ; TxMultiplexData[2] = 0x55 ; // can be use to measure the timing between bits
                           state = TxPENDING ;
-                          OCR1A += DELAY_2000 ;                                                   
+                          OCR1A += DELAY_2000 ;
              } else {                                                           // Status was not AVAILABLE, so there are no data ready to send
-                   OCR1A += DELAY_100 ;   // 100usec gap before trying again that another data becomes available 
+                   OCR1A += DELAY_100 ;   // 100usec gap before trying again that another data becomes available
              }
              break ;
 #endif
 
   // Unknown state.
-    default:        
+    default:
           state = IDLE;                               // Error, should not occur. Going to a safe state.
   } // End CASE
 //#ifdef PPM_INTERRUPT
@@ -598,13 +598,13 @@ ISR(TIMER1_COMPA_vect)
 void initMultiplexUart( struct t_mbAllData * volatile pdata )           //*************** initialise UART for Multiplex
 {
     ThisMultiplexData = pdata ;              // this allows the ISR routine to get access to the data in OXS_Out_Multiplex
-    
+
     //PORT
     TRXDDR &= ~( 1 << PIN_SERIALTX ) ;       // PIN is input.
     TRXPORT &= ~( 1 << PIN_SERIALTX ) ;      // PIN is tri-stated.
 
   // External interrupt
-  
+
 #if PIN_SERIALTX == 4
     PCMSK2 |= 0x10 ;      // IO4 (PD4) on Arduini mini
 #elif PIN_SERIALTX == 2
@@ -613,12 +613,12 @@ void initMultiplexUart( struct t_mbAllData * volatile pdata )           //******
     #error "This PIN is not supported"
 #endif
     CLEAR_PIN_CHANGE_INTERRUPT() ;
-    ENABLE_PIN_CHANGE_INTERRUPT() ; 
+    ENABLE_PIN_CHANGE_INTERRUPT() ;
     state = IDLE ;     // Internal State Variable
 
 #if DEBUGASERIAL
     DDRC = 0x01 ;   // PC0 as o/p debug = pin A0 !!!!
-    PORTC = 0 ; 
+    PORTC = 0 ;
 #endif
 
 #ifdef DEBUG_MULTIPLEX_WITHOUT_RX    // in this debug case, we have to enable timer interrupt without waiting for a pin change interrupt.
@@ -647,7 +647,7 @@ void initMultiplexUart( struct t_mbAllData * volatile pdata )           //******
 
 ISR(PCINT2_vect)
 {
-  if (!( TRXPIN & ( 1 << PIN_SERIALTX ) )) {      // Pin is low = start bit 
+  if (!( TRXPIN & ( 1 << PIN_SERIALTX ) )) {      // Pin is low = start bit
             DISABLE_PIN_CHANGE_INTERRUPT()  ;     // pin change interrupt disabled
             state = RECEIVE ;                 // Change state
             DISABLE_TIMER_INTERRUPT() ;       // Disable timer to change its registers.
@@ -671,4 +671,3 @@ ISR(PCINT2_vect)
 // -------------------------End of Multiplex protocol--------------------------------------------------------------------------------------
 
 #endif // END of MULTIPLEX
-
