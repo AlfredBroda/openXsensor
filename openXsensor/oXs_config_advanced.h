@@ -119,12 +119,12 @@
 
 // ***** 6.2 - Voltage parameters *****
 // Each of following lines contains 6 parameters, the first value is for VOLT_1, the second for VOLT_2, ... up to the sixth for VOLT_6
-//                         VOLT1 VOLT2  VOLT3 VOLT4 VOLT5 VOLT6
-#define PIN_VOLTAGE         0   , 1    , 2   , 3   , 6   , 7               //  Fill 6 values; set to 0 up to 7 for analog pins A0 up to A7 ; set the value to 8 for the voltage(s) not to be measured.
-#define RESISTOR_TO_GROUND  9.8 , 9.7  , 0   , 0   , 0   , 0               // set value to 0 when no divider is used for a voltage; can contains decimals
-#define RESISTOR_TO_VOLTAGE 9.7 , 29.4 , 0   , 0   , 0   , 0              // set value to 0 when no divider is used for a voltage; can contains decimals
-#define OFFSET_VOLTAGE      0   , 0    , 0   , 0   , 0   , 0                // optionnal, can be negative, must be integer, in principe in mv
-#define SCALE_VOLTAGE       1.0 , 1.0  , 1.0 , 1.0 , 1.0 , 1.0              // optionnal, can be negative, can have decimals
+//                         VOLT1  VOLT2  VOLT3  VOLT4 VOLT5 VOLT6
+#define PIN_VOLTAGE         2    , 1    , 0    , 3   , 6   , 7               //  Fill 6 values; set to 0 up to 7 for analog pins A0 up to A7 ; set the value to 8 for the voltage(s) not to be measured.
+#define RESISTOR_TO_GROUND  9.81 , 9.82 , 9.83 , 10  , 10  , 10               // set value to 0 when no divider is used for a voltage; can contains decimals
+#define RESISTOR_TO_VOLTAGE 0.98 , 9.8  , 22.1 , 0   , 0   , 0              // set value to 0 when no divider is used for a voltage; can contains decimals
+#define OFFSET_VOLTAGE      0    , 0    , 0    , 0   , 0   , 0                // optionnal, can be negative, must be integer, in principe in mv
+#define SCALE_VOLTAGE       1.0  , 1.0  , 1.0  , 1.0 , 1.0 , 1.0              // optionnal, can be negative, can have decimals
 
 // ***** 6.3 - Max number of Lipo cells to measure (and transmit to Tx) *****      Is defined only in oXs_config_basic.h file
 //#define DEBUGCELLCALCULATION
@@ -162,7 +162,7 @@
 #define ADS_AIRSPEED_BASED_ON ADS_VOLT_1  // uncomment if airspeed (and dte) have to be calculated based on one of ADS voltage measurement ; select then the voltage to be used between ADS_VOLT_1, ADS_VOLT_2, ADS_VOLT_3, ADS_VOLT_4
 
 // --------- 7 - RPM (rotations per minute) settings ---------
-#define PULSES_PER_ROTATION 1
+#define PULSES_PER_ROTATION 2
 
 // --------- 8 - Persistent memory settings ---------
 //#define PIN_PUSHBUTTON    2   // default is 10 but my own device is 2
@@ -222,9 +222,10 @@
 
 
 // --------- xx - Reserved for developer. DEBUG must be activated here when we want to debug one or several functions in some other files. ---------
-#define DEBUG
-//#define DEBUG_BLINK   // use by developper in order to blink the led without using uart for debugging
-
+//#define DEBUG
+#define DEBUG_BLINK   // use by developper in order to blink the led without using uart for debugging
+#define DEBUG_BLINK_MAINLOOP
+//#define DEBUG_RPM
 
 #define BASED_ON_AIRSPEED 0
 #define BASED_ON_GPS_SPEED 1
